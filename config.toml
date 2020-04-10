@@ -1,23 +1,41 @@
+# If you need help hosting this event bot,
+# I am able to help you for a very small fee.
+# Just contact me on Discord
+# Eyesofcreeper#0001
+
 [bot]
-prefixes = ["c!", "d!"]
-description = """An example bot designed to get started quickly with discord.py"""
-playing = "Edit mah config"
+prefixes = ["c!", "d!", "D!", "coroned"]
+description = """Fuck the whole server is infected..."""
+playing = "Coroned"
 commands_are_case_insensitive = true
 
 [auth.discord]
 # Your bot token. You can find it on the Bot page of the Developper portal
 token = ""
 
+[database]
+database = "corona"
+username = "corona"
+password = "corona"
+host = "127.0.0.1"
+port = "5432"
+
 [cogs]
 # Names of cogs to load. Usually cogs.file_name_without_py
-cogs_to_load = ['jishaku', 'cogs.error_handling', 'cogs.simple_commands', 'cogs.background_loop', 'cogs.support_server_commands']
+cogs_to_load = ['jishaku', 'cogs.error_handling', 'cogs.background_loop', 'cogs.support_server_commands', 'cogs.coronavirus', 'cogs.ama']
 
-# The name after cogs is the name of the class
-[cogs.SimpleCommands]
-hello_message = "Hello there!"
+[cogs.Coronavirus]
+infected_role_id = 694973756359311433
+cured_role_id = 694974040200314941
+dead_role_id = 694973909002354751
+
+log_channel_id = 694975004743303259
 
 [cogs.SupportServerCommands]
 # That's the ID of your server where the command will be ran
 support_server_id = 336642139381301249
 # ID of an empty channel that will be used as a status dashboard.
 status_channel_id = 694531384873713704
+
+[cogs.AMA]
+ama_channel_id = 696077719129161759

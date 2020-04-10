@@ -1,9 +1,10 @@
+import datetime
 import traceback
 import sys
 from discord.ext import commands
 import discord
 
-from utils import checks
+from utils import checks, human_time
 from utils.cog_class import Cog
 from utils.ctx_class import MyContext
 
@@ -56,7 +57,7 @@ class CommandErrorHandler(Cog):
                     else:  # Should not trigger, just in case some more errors are added.
                         message = f"❌ The way you are invoking this command is confusing me. The correct syntax would be `{command_invoke_help}`."
                 elif isinstance(exception, commands.BadArgument):
-                    message = f"❌ An argument passed was incorrect. `{exception.message}`" \
+                    message = f"❌ An argument passed was incorrect. {str(exception)}. " \
                               f"Please check that you are using the correct syntax: `{command_invoke_help}`."
                 elif isinstance(exception, commands.BadUnionArgument):
                     message = f"❌ {str(exception)}. The correct syntax would be `{command_invoke_help}`."
@@ -108,12 +109,14 @@ class CommandErrorHandler(Cog):
                 message = f"❌ There was an error running the specified command. Contact the bot admins."
                 ctx.logger.error("".join(traceback.format_exception(type(exception), exception, exception.__traceback__)))
             elif isinstance(exception, commands.errors.CommandOnCooldown):
-                if self.bot.is_owner(ctx.author):
+                if await self.bot.is_owner(ctx.author):
                     await ctx.reinvoke()
                     return
                 else:
-                    message = "❌ This command is overused. Please try again in {seconds}s.".format(
-                        seconds=round(exception.retry_after, 1))
+                    now = datetime.datetime.utcnow()
+                    time = human_time.human_timedelta(now + datetime.timedelta(seconds=round(exception.retry_after, 1)))
+                    message = "❌ This command is overused. Please try again in {time}.".format(
+                        time=time)
             elif isinstance(exception, commands.errors.MaxConcurrencyReached):
                 message = f"❌ {str(exception)}"  # The message from the lib is great.
             else:

@@ -1,6 +1,12 @@
+asyncpg
 jishaku
 toml
 uvloop
 parsedatetime
 pytz
 discord.py[voice]
+tortoise-orm
+python-rapidjson
+ciso8601
+pydantic
+python-dateutil

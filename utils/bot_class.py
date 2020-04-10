@@ -1,3 +1,4 @@
+import asyncio
 import collections
 import datetime
 import traceback
@@ -8,6 +9,7 @@ from discord.ext import commands
 
 from utils import config as config
 from utils.ctx_class import MyContext
+from utils.database import Database
 from utils.logger import FakeLogger
 
 
@@ -21,6 +23,9 @@ class MyBot(AutoShardedBot):
         self.commands_used = collections.Counter()
         self.uptime = datetime.datetime.utcnow()
         self.shards_ready = set()
+        db_config = self.config['database']
+        self.db = Database(self)
+        asyncio.ensure_future(self.db.init(f"postgres://{db_config['username']}:{db_config['password']}@{db_config['host']}:{db_config['port']}/{db_config['database']}"))
 
     def reload_config(self):
         self.config = config.load_config()
@@ -29,8 +34,8 @@ class MyBot(AutoShardedBot):
         if not self.is_ready():
             return  # Ignoring messages when not ready
 
-        if message.author.bot:
-            return  # ignore messages from other bots
+        #if message.author.bot:
+        #    return  # ignore messages from other bots
 
         ctx = await self.get_context(message, cls=MyContext)
         if ctx.prefix is not None:
