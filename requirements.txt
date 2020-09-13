@@ -5,7 +5,7 @@ uvloop
 parsedatetime
 pytz
 discord.py[voice]
-tortoise-orm==0.16.3
+tortoise-orm==0.16.6
 python-rapidjson
 ciso8601
 pydantic
